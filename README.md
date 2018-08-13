@@ -5,7 +5,7 @@ ABOUT THIS APP:
 
 ### Programming languages
 ____
-##### FRONTEND: REACT JS + ANTD UI.
+##### FRONTEND: REACT JS + SEMANTIC UI.
 ##### BACKEND: NONE.
 
 ### Developers
