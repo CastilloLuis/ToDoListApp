@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AddTask from '../add-task/add-task';
+import Task from '../task/task';
 
 export default class Home extends Component {
     render() {

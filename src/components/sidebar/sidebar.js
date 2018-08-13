@@ -19,19 +19,19 @@ export default class SideBar extends Component {
                                 />
                             </Item>
                             <Link to="/">
-                                <Menu.Item as='a'>
+                                <Menu.Item>
                                     <Icon name='home' />
                                     Home
                                 </Menu.Item>
                             </Link>                            
                             <Link to="/important">
-                                <Menu.Item as='a'>
+                                <Menu.Item>
                                     <Icon name='star' />
                                     Important
                                 </Menu.Item>
                             </Link>
                             <Link to="/completed">
-                                <Menu.Item as='a'>
+                                <Menu.Item>
                                     <Icon name='check' />
                                     Completed
                                 </Menu.Item>
