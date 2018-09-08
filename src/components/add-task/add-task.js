@@ -25,6 +25,7 @@ export default class AddTask extends Component {
                 <Task
                     showModal={() => this.state.openModal}
                     hideModal={() => this.hideModal()}
+                    addTask={(val) => this.addTask(val)}
                 ></Task>
             </div>
         );
@@ -37,6 +38,13 @@ export default class AddTask extends Component {
 
     hideModal = () => {
         this.setState({openModal: false});
+    }
+
+    /* task action */
+
+    addTask = (val) => {
+        console.warn(val);
+        
     }
 
 }
