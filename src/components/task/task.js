@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Input, Form, Card, Transition, TextArea, Container, Grid, Label, Loader } from 'semantic-ui-react'
-import * as regex from '../../utils/regex';
+import * as h from '../../utils/helpers';
 import './task.css'
 
 export default class Task extends Component {
@@ -26,14 +26,14 @@ export default class Task extends Component {
 
     getTaskText  = (text) => this.setState({task: text});
 
-    onBlurAction = () => regex.EMPTY_VAL.test(this.state.title) ? 
+    onBlurAction = () => h.EMPTY_VAL.test(this.state.title) ? 
                          this.setState({isempty: true}) : 
                          this.setState({isempty: false});
 
     addTask = () => {
         this.setState({isloading: true});
         setTimeout(() => {
-            let json = { title: this.state.title, task: this.state.task };
+            let json = { title: this.state.title, task: this.state.task, date: h.getDate() };
             this.props.addTask(json);
             this.setState({isloading: false});
         }, 2000)

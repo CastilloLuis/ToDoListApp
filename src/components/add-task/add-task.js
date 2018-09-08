@@ -2,12 +2,18 @@ import React, { Component } from 'react';
 import './add-task.css';
 import { Button } from 'semantic-ui-react';
 import  Task  from '../task/task';
+import { addTask } from '../../utils/service';
+import MessageHandler from '../messages-handler';
 
 export default class AddTask extends Component {
     constructor() {
         super();
         this.state = {
-            openModal: false
+            openModal: false,
+            messageHandler: {
+                success: false,
+                error: false
+            }
         }
     }
 
@@ -22,6 +28,10 @@ export default class AddTask extends Component {
                     className='addButton' 
                     onClick={() => this.openModal()}
                 />
+                <MessageHandler 
+                    setSuccessState={() => this.state.messageHandler.success}
+                    setErrorState={() => this.state.messageHandler.error}
+                ></MessageHandler>
                 <Task
                     showModal={() => this.state.openModal}
                     hideModal={() => this.hideModal()}
@@ -40,11 +50,17 @@ export default class AddTask extends Component {
         this.setState({openModal: false});
     }
 
-    /* task action */
-
-    addTask = (val) => {
-        console.warn(val);
-        
+    /* task add action */
+    async addTask(val) {
+        let response = await addTask(val); 
+        if(response) {
+            this.setState({messageHandler: {success: true, error: false}});
+            alert('Added successfully');
+            this.hideModal();
+        } else {
+            this.setState({messageHandler: {success: false, error: true}});
+            alert('Error while adding');
+        }
     }
 
 }
