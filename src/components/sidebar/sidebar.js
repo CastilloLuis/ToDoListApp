@@ -13,7 +13,7 @@ export default class SideBar extends Component {
                         <Sidebar as={Menu} animation='overlay' icon='labeled' inverted vertical visible>
                             <Item as='a'>
                                 <Image 
-                                    src='https://react.semantic-ui.com/images/wireframe/square-image.png'
+                                    src='https://avatars2.githubusercontent.com/u/37077073?s=460&v=4'
                                     size='small'    
                                     circular
                                 />

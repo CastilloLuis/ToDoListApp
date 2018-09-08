@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Checkbox, Form, Card, Transition, TextArea, Icon } from 'semantic-ui-react'
+import { Button, Checkbox, Form, Card, Transition, TextArea, Icon, Container } from 'semantic-ui-react'
 import './task.css'
 
 export default class Task extends Component {
@@ -28,16 +28,23 @@ export default class Task extends Component {
                     <Card.Content>
                     <Form>
                         <Button 
-                            color='youtube'
+                            basic
                             onClick={() => this.closeModal()}
                             icon='close'
-                            style={{marginLeft: '90%'}}
+                            style={{marginLeft: '90%', color: 'black'}}
                         />
                         <div style={{padding: '20px'}}>
                             <TextArea placeholder='Tell us more' style={{ minHeight: 100 }} />
                         </div>
                     </Form>
                     </Card.Content>
+                    <Container 
+                        textAlign='center'
+                        style={{marginBottom: '10%'}}
+                    >
+                        <Button color='red' onClick={() => this.closeModal()}>Cancel</Button>
+                        <Button primary> Add task</Button>
+                    </Container>
                 </Card>
             </Transition>
             </div>
