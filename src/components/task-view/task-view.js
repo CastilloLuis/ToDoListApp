@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Card, Container } from 'semantic-ui-react'
+import styles from './task-view.css';
 
 export default class TaskView extends Component {
 
@@ -15,9 +16,19 @@ export default class TaskView extends Component {
         this.props.dragStart(e);
     }
 
+    onMouseGrab = (id) => {
+        document.getElementById(id).style.cursor = 'grab';
+    }
+
     render() {
         return (
-            <div id={this.props.id} style={{marginBottom: '20px'}} className="box" draggable onDragStart={(e) => this.dragStart(e)}>
+            <div 
+                id={this.props.id} 
+                className={styles.box}
+                draggable 
+                onDragStart={(e) => this.dragStart(e)} 
+                onMouseEnter={() => this.onMouseGrab(this.props.id)}
+            >
             <Card>
                 <Card.Content>
                     <Card.Header>{this.props.title}</Card.Header>

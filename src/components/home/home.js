@@ -23,7 +23,7 @@ export default class Home extends Component {
         return(
             <div className="droppable" 
                 onDragOver={(e) => this.onDragOver(e)}
-                onDrop={(e) => this.onDropEvent(e, "ready")}
+                onDrop={(e) => this.onDropEvent(e)}
             >
                 <div style={{padding: '20px', display: 'block'}} className="holder"> 
                     <Grid columns={3}>
@@ -44,7 +44,7 @@ export default class Home extends Component {
                                             ></TaskView>
                                         </Grid.Column>
                                     )
-                                })
+                                }).reverse()
                         }
                         </Grid.Row>
                     </Grid>
@@ -86,8 +86,6 @@ export default class Home extends Component {
     /* drag and drop cards */
 
     onDragStart = (e, id) => {
-        console.log(id);
-        console.log(e)
         e.dataTransfer.setData('id', id);
     }
 
@@ -96,11 +94,15 @@ export default class Home extends Component {
         e.preventDefault();
     }
 
-    onDropEvent = (e, msg) => {
-        e.preventDefault();
-        console.log('ondrop');
-        let id = e.dataTransfer.getData('id');
-        e.target.appendChild(document.getElementById(id));
+    onDropEvent = (e) => {
+        //e.preventDefault();
+        try {
+            let id = e.dataTransfer.getData('id');
+            e.target.appendChild(document.getElementById(id));       
+            e.dataTransfer.clearData();     
+        } catch (e) {
+            console.log('You left the item at the same position');
+        }
     }
 
 
