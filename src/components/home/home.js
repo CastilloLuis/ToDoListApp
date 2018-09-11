@@ -9,7 +9,8 @@ import Task from '../task/task';
 export default class Home extends Component {
 
     state = {
-        tasks: []
+        tasks: [],
+        added: false
     }
 
     async componentDidMount() {
@@ -20,8 +21,11 @@ export default class Home extends Component {
 
     render() {
         return(
-            <div>
-                <div style={{padding: '20px', display: 'block'}}> 
+            <div className="droppable" 
+                onDragOver={(e) => this.onDragOver(e)}
+                onDrop={(e) => this.onDropEvent(e, "ready")}
+            >
+                <div style={{padding: '20px', display: 'block'}} className="holder"> 
                     <Grid columns={3}>
                         <Grid.Row>
                         {this.state.tasks.length === 0 
@@ -35,7 +39,8 @@ export default class Home extends Component {
                                                 date={t.date}
                                                 taskDescription={t.task} 
                                                 deleteTask={() => this.deleteTask(t.id)}
-                                                editTask={() => this.editTask(t.id)}
+                                                editTask={() => this.editTask(t.id)} 
+                                                dragStart={(e) => this.onDragStart(e, t.id)}
                                             ></TaskView>
                                         </Grid.Column>
                                     )
@@ -46,6 +51,7 @@ export default class Home extends Component {
                 </div>
                 <AddTask
                     addTask={(val) => this.addTask(val)}
+                    added={this.state.added}
                     ></AddTask>
             </div>
         )
@@ -60,10 +66,8 @@ export default class Home extends Component {
         let response = await addTask(val); 
         if(response) {
             alert('Added successfully');
+            this.setState({added: true});
             this.getTasks().then((t) => this.setState({tasks: t}));
-            /*this.setState({messageHandler: {success: true, error: false}});
-            alert('Added successfully');
-            this.hideModal();*/
         } else {
             this.setState({messageHandler: {success: false, error: true}});
             alert('Error while adding');
@@ -78,4 +82,26 @@ export default class Home extends Component {
     async editTask(id) {
         console.log(`Editing task with id: ${id}`);
     }
+
+    /* drag and drop cards */
+
+    onDragStart = (e, id) => {
+        console.log(id);
+        console.log(e)
+        e.dataTransfer.setData('id', id);
+    }
+
+    onDragOver = (e) => {
+        console.log('ondragover');
+        e.preventDefault();
+    }
+
+    onDropEvent = (e, msg) => {
+        e.preventDefault();
+        console.log('ondrop');
+        let id = e.dataTransfer.getData('id');
+        e.target.appendChild(document.getElementById(id));
+    }
+
+
 }

@@ -48,7 +48,7 @@ export default class AddTask extends Component {
 
     /* task add action */
     addTask = (val) => {
-        this.props.addTask(val);
+        this.props.addTask(val).then((r) => this.props.added ? this.hideModal() : false);
     }
 
 }

@@ -11,9 +11,13 @@ export default class TaskView extends Component {
         this.props.editTask();
     }
 
+    dragStart = (e) => {
+        this.props.dragStart(e);
+    }
+
     render() {
         return (
-            <div style={{marginBottom: '20px'}}>
+            <div id={this.props.id} style={{marginBottom: '20px'}} className="box" draggable onDragStart={(e) => this.dragStart(e)}>
             <Card>
                 <Card.Content>
                     <Card.Header>{this.props.title}</Card.Header>
