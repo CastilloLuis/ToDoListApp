@@ -33,9 +33,9 @@ export default class Task extends Component {
     addTask = () => {
         this.setState({isloading: true});
         setTimeout(() => {
-            let json = { title: this.state.title, task: this.state.task, date: h.getDate() };
+            let json = { id: h.generateID(), title: this.state.title, task: this.state.task, date: h.getDate() };
             this.props.addTask(json);
-            this.setState({isloading: false});
+            this.setState({isloading: false, title: '', task: ''});
         }, 2000)
     }
 

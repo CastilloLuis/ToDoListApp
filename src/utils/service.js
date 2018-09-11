@@ -1,12 +1,28 @@
 export const getMyTasks = () => {
-    return JSON.parse(localStorage.getItem('tasks'));
+    return new Promise((res, rej) => {
+        try {
+            res(JSON.parse(localStorage.getItem('tasks')));
+        } catch (e) {
+            rej(e);
+        }
+    })
 }
 
 export const addTask = (data) => {
     return new Promise((res, rej) => {
         try {
-            localStorage.setItem('data', data);
-            res(true);
+            getMyTasks().then((r) => {
+                if(r === null) {
+                    localStorage.setItem('tasks', JSON.stringify([data]));
+                } else {
+                    /*console.log(r);
+                    console.log(data);
+                    console.log(r);*/
+                    r.push(data);
+                    localStorage.setItem('tasks', JSON.stringify(r));
+                }
+                res(true);
+            })
         } catch (e) {
             rej(false);
         }

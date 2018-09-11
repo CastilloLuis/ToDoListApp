@@ -28,11 +28,7 @@ export default class AddTask extends Component {
                     className='addButton' 
                     onClick={() => this.openModal()}
                 />
-                <MessageHandler 
-                    setSuccessState={() => this.state.messageHandler.success}
-                    setErrorState={() => this.state.messageHandler.error}
-                ></MessageHandler>
-                <Task
+                <Task 
                     showModal={() => this.state.openModal}
                     hideModal={() => this.hideModal()}
                     addTask={(val) => this.addTask(val)}
@@ -51,7 +47,7 @@ export default class AddTask extends Component {
     }
 
     /* task add action */
-    async addTask(val) {
+    async addTask(val) { // val from task.js
         let response = await addTask(val); 
         if(response) {
             this.setState({messageHandler: {success: true, error: false}});
