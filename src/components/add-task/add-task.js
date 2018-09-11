@@ -47,16 +47,8 @@ export default class AddTask extends Component {
     }
 
     /* task add action */
-    async addTask(val) { // val from task.js
-        let response = await addTask(val); 
-        if(response) {
-            this.setState({messageHandler: {success: true, error: false}});
-            alert('Added successfully');
-            this.hideModal();
-        } else {
-            this.setState({messageHandler: {success: false, error: true}});
-            alert('Error while adding');
-        }
+    addTask = (val) => {
+        this.props.addTask(val);
     }
 
 }

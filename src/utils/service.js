@@ -13,13 +13,13 @@ export const addTask = (data) => {
         try {
             getMyTasks().then((r) => {
                 if(r === null) {
-                    localStorage.setItem('tasks', JSON.stringify([data]));
+                    setTasks([data]);
                 } else {
                     /*console.log(r);
                     console.log(data);
                     console.log(r);*/
                     r.push(data);
-                    localStorage.setItem('tasks', JSON.stringify(r));
+                    setTasks(r);
                 }
                 res(true);
             })
@@ -33,8 +33,17 @@ export const deleteTask = (id) => {
     return new Promise((res, rej) => {
         try {
             console.log('remove item');
+            console.warn(id);
+            getMyTasks().then((r) => {
+                r.map((t) => t.id === id ? r.splice(r.indexOf(t), 1) : console.log('ney'));
+                setTasks(r);
+                res(r);
+            })
         } catch (e) {
             console.log('error removing item');
+            rej(e);
         }
     })
 }
+
+const setTasks = (tasks) => localStorage.setItem('tasks', JSON.stringify(tasks));

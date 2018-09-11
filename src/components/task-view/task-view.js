@@ -2,8 +2,18 @@ import React, { Component } from 'react';
 import { Button, Card, Container } from 'semantic-ui-react'
 
 export default class TaskView extends Component {
+
+    deleteTask = () => {
+        this.props.deleteTask();
+    }
+
+    editTask = () => {
+        this.props.editTask();
+    }
+
     render() {
         return (
+            <div style={{marginBottom: '20px'}}>
             <Card>
                 <Card.Content>
                     <Card.Header>{this.props.title}</Card.Header>
@@ -18,11 +28,12 @@ export default class TaskView extends Component {
                         <Button circular inverted color='green' icon='check circle'></Button>
                     </Container>
                     <div className='ui two buttons'>
-                        <Button color='yellow' icon='pencil'></Button>
-                        <Button color='red' icon='trash' onClick={() => localStorage.removeItem('tasks')}></Button>
+                        <Button color='yellow' icon='pencil' onClick={() => this.editTask()}></Button>
+                        <Button color='red' icon='trash' onClick={() => this.deleteTask()}></Button>
                     </div>
                 </Card.Content>
-            </Card>               
+            </Card>          
+            </div>     
         )
     }
 }
