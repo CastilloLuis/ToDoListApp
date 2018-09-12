@@ -42,6 +42,7 @@ export default class TaskContainer extends Component {
                                                 markAsImportant={() => this.markAsImportant(t.id)}
                                                 markAsComplete={() => this.markAsComplete(t.id)}
                                                 unmarkAsImportant={() => this.unmarkAsImportant(t.id)}
+                                                unmarkAsComplete={() => this.unmarkAsComplete(t.id)}
                                                 viewType={this.props.getViewType}
                                             ></TaskView>
                                         </Grid.Column>
@@ -119,6 +120,10 @@ export default class TaskContainer extends Component {
         console.log('unmarked as important... passed to home');
         let t = await unmarkAsImportant(id, 2);
         this.setState({tasks: t.tasks});
+    }
+
+    async unmarkAsComplete(id) {
+        console.log('unmarked as completed... passed to home or favorites');
     }
 
     evalResponse = (response) => {

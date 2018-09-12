@@ -5,8 +5,8 @@ import styles from './task-view.css';
 export default class TaskView extends Component {
 
     deleteTask = () => {
-        //this.props.deleteTask();
-        localStorage.removeItem('important')
+        this.props.deleteTask();
+        //localStorage.removeItem('important')
     }
 
     editTask = () => {
@@ -58,10 +58,24 @@ export default class TaskView extends Component {
                     <Container textAlign='center' style={{marginBottom: '2%'}}>
                         {
                             this.props.viewType != 1
-                            ? (<Button circular inverted color='red' icon='star' onClick={() => this.unmarkAsImportant()}></Button>)
-                            : (<Button circular inverted color='yellow' icon='star' onClick={() => this.markAsImportant()}></Button>)
+                            ? 
+                                this.props.viewType === 3 ?
+                                (
+                                    <Button circular inverted color='red' icon='times circle' onClick={() => this.unmarkAsComplete()}></Button>
+                                ) :
+                            (
+                                <div>
+                                    <Button  circular inverted color='red' icon='star' onClick={() => this.unmarkAsImportant()}></Button>
+                                    <Button circular inverted color='green' icon='check circle' onClick={() => this.markAsComplete()}></Button>
+                                </div>
+                            )
+                            : (
+                                <div>
+                                    <Button circular inverted color='yellow' icon='star' onClick={() => this.markAsImportant()}></Button>
+                                    <Button circular inverted color='green' icon='check circle' onClick={() => this.markAsComplete()}></Button>
+                                </div>
+                            )
                         }
-                        <Button circular inverted color='green' icon='check circle' onClick={() => this.markAsComplete()}></Button>
                     </Container>
                     <div className='ui two buttons'>
                         <Button color='yellow' icon='pencil' onClick={() => this.editTask()}></Button>
