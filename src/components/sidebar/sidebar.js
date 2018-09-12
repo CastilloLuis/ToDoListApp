@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import Home from '../home/home';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { Icon, Image, Menu, Sidebar, Grid, Item } from 'semantic-ui-react'
- 
+import ImportantView from '../pages-view/important/important';
+import HomeView from '../pages-view/home/home';
+import CompleteView from '../pages-view/complete/complete';
+
 export default class SideBar extends Component {
     render() {
         return(
@@ -30,7 +32,7 @@ export default class SideBar extends Component {
                                     Important
                                 </Menu.Item>
                             </Link>
-                            <Link to="/completed">
+                            <Link to="/complete">
                                 <Menu.Item>
                                     <Icon name='check' />
                                     Completed
@@ -41,7 +43,10 @@ export default class SideBar extends Component {
                     </Grid.Column>
 
                     <Grid.Column width={14}>         
-                        <Route exact path='/' component={Home} />
+                        <Route exact path='/' component={HomeView} />
+                        <Route exact path='/important' component={ImportantView} />
+                        <Route exact path='/complete' component={CompleteView} />
+                        
                     </Grid.Column>
                 </Grid>
           </Router>

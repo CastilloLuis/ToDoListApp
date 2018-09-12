@@ -1,15 +1,32 @@
 import React, { Component } from 'react';
 import { Button, Card, Container } from 'semantic-ui-react'
 import styles from './task-view.css';
-
+ 
 export default class TaskView extends Component {
 
     deleteTask = () => {
-        this.props.deleteTask();
+        //this.props.deleteTask();
+        localStorage.removeItem('important')
     }
 
     editTask = () => {
         this.props.editTask();
+    }
+
+    markAsImportant = () => {
+        this.props.markAsImportant();
+    }
+
+    markAsComplete = () => {
+        this.props.markAsComplete();
+    }
+
+    unmarkAsImportant = () => {
+        this.props.unmarkAsImportant();
+    }
+
+    unmarkAsComplete = () => {
+        this.props.unmarkAsComplete();
     }
 
     dragStart = (e) => {
@@ -39,8 +56,12 @@ export default class TaskView extends Component {
                 </Card.Content>
                 <Card.Content extra>
                     <Container textAlign='center' style={{marginBottom: '2%'}}>
-                        <Button circular inverted color='yellow' icon='star'></Button>
-                        <Button circular inverted color='green' icon='check circle'></Button>
+                        {
+                            this.props.viewType != 1 
+                            ? (<Button circular inverted color='red' icon='star' onClick={() => this.unmarkAsImportant()}></Button>)
+                            : (<Button circular inverted color='yellow' icon='star' onClick={() => this.markAsImportant()}></Button>)
+                        }
+                        <Button circular inverted color='green' icon='check circle' onClick={() => this.markAsComplete()}></Button>
                     </Container>
                     <div className='ui two buttons'>
                         <Button color='yellow' icon='pencil' onClick={() => this.editTask()}></Button>

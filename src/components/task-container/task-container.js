@@ -3,10 +3,10 @@ import AddTask from '../add-task/add-task';
 import TaskView from '../task-view/task-view';
 import { Grid, Container } from 'semantic-ui-react';
 
-import { getMyTasks, addTask, deleteTask } from '../../utils/service';
+import { getMyTasks, addTask, deleteTask, markAsImportant, unmarkAsImportant } from '../../utils/service';
 import Task from '../task/task';
 
-export default class Home extends Component {
+export default class TaskContainer extends Component {
 
     state = {
         tasks: [],
@@ -40,7 +40,11 @@ export default class Home extends Component {
                                                 taskDescription={t.task} 
                                                 deleteTask={() => this.deleteTask(t.id)}
                                                 editTask={() => this.editTask(t.id)} 
-                                                dragStart={(e) => this.onDragStart(e, t.id)}
+                                                dragStart={(e) => this.onDragStart(e, t.id)} 
+                                                markAsImportant={() => this.markAsImportant(t.id)}
+                                                markAsComplete={() => this.markAsComplete()}
+                                                unmarkAsImportant={() => this.unmarkAsImportant(t.id)}
+                                                viewType={this.props.getViewType}
                                             ></TaskView>
                                         </Grid.Column>
                                     )
@@ -49,21 +53,75 @@ export default class Home extends Component {
                         </Grid.Row>
                     </Grid>
                 </div>
-                <AddTask
-                    addTask={(val) => this.addTask(val)}
-                    added={this.state.added}
+                <div 
+                    style={{display: this.props.getViewType != 1 ? 'none' : 'block'}}
+                >
+                    <AddTask
+                        addTask={(val) => this.addTask(val, this.props.getViewType)}
+                        added={this.state.added}
                     ></AddTask>
+                </div>
             </div>
         )
     }
 
     async getTasks() {
-        let res = await getMyTasks();
-        return res;
+        switch(this.props.getViewType) {
+            case 1:
+                console.log('home view');
+                return await getMyTasks(1);
+            case 2:
+                console.log('important view');
+                return await getMyTasks(2);
+            case 3:
+                console.log('complete view');
+                return await getMyTasks(3);
+        }
     }
 
-    async addTask(val) { // val from task.js
-        let response = await addTask(val); 
+    async addTask(val, type) { // val from task.js
+        console.log(val);
+        console.log(type);
+        let response;
+        switch(type) {
+            case 1:
+                response = await addTask(val, 1);
+                break;
+            case 2:
+                response = await addTask(val, 2);
+                break;
+            case 3:
+                response = await addTask(val, 3);
+                break;
+        }
+        this.evalResponse(response);
+    }
+
+    async deleteTask(id) {
+        let res = await deleteTask(id, this.props.getViewType);
+        this.setState({tasks: res});
+    }
+
+    async editTask(id) {
+        console.log(`Editing task with id: ${id}`);
+    }
+
+    async markAsImportant(id) {
+        let t = await markAsImportant(id, 2);
+        this.setState({tasks: t.tasks});
+    }
+
+    async markAsComplete() {
+        console.log('complete task');
+    }
+
+    async unmarkAsImportant(id) {
+        console.log('unmarked as important... passed to home');
+        let t = await unmarkAsImportant(id, 2);
+        this.setState({tasks: t.tasks});
+    }
+
+    evalResponse = (response) => {
         if(response) {
             alert('Added successfully');
             this.setState({added: true});
@@ -72,15 +130,6 @@ export default class Home extends Component {
             this.setState({messageHandler: {success: false, error: true}});
             alert('Error while adding');
         }
-    }
-
-    async deleteTask(id) {
-        let res = await deleteTask(id);
-        this.setState({tasks: res});
-    }
-
-    async editTask(id) {
-        console.log(`Editing task with id: ${id}`);
     }
 
     /* drag and drop cards */

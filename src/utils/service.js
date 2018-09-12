@@ -1,25 +1,22 @@
-export const getMyTasks = () => {
+export const getMyTasks = (type) => {
     return new Promise((res, rej) => {
         try {
-            res(JSON.parse(localStorage.getItem('tasks')));
+            res(getTasksByType(type));
         } catch (e) {
             rej(e);
         }
     })
 }
 
-export const addTask = (data) => {
+export const addTask = (data, type) => {
     return new Promise((res, rej) => {
         try {
-            getMyTasks().then((r) => {
+            getMyTasks(type).then((r) => {
                 if(r === null) {
-                    setTasks([data]);
+                    setTasks([data], type);
                 } else {
-                    /*console.log(r);
-                    console.log(data);
-                    console.log(r);*/
                     r.push(data);
-                    setTasks(r);
+                    setTasks(r, type);
                 }
                 res(true);
             })
@@ -29,14 +26,18 @@ export const addTask = (data) => {
     });
 }
 
-export const deleteTask = (id) => {
+export const editTask = () => {
+    
+}
+
+export const deleteTask = (id, type) => {
     return new Promise((res, rej) => {
         try {
             console.log('remove item');
             console.warn(id);
-            getMyTasks().then((r) => {
+            getMyTasks(type).then((r) => {
                 r.map((t) => t.id === id ? r.splice(r.indexOf(t), 1) : console.log('ney'));
-                setTasks(r);
+                setTasks(r, type);
                 res(r);
             })
         } catch (e) {
@@ -46,4 +47,91 @@ export const deleteTask = (id) => {
     })
 }
 
-const setTasks = (tasks) => localStorage.setItem('tasks', JSON.stringify(tasks));
+/* MARK AS IMPORTANT OR COMPLETE ITEM "SERVICES" */
+
+export const markAsImportant = (id, type) => {
+    return new Promise((res, rej) => {
+        getMyTasks(1).then((r) => {
+            let data = (r.filter(j => j.id === id))[0];
+            try {
+                getMyTasks(2).then((r) => {
+                    if(r === null) {
+                        setTasks([data], 2);
+                    } else {
+                        r.push(data);
+                        setTasks(r, 2);
+                    }
+                    deleteTask(id, 1).then((d) => {
+                        console.log(d);
+                        res({
+                            status: true,
+                            tasks: d
+                        });
+                    })
+                })
+            } catch (e) {
+                rej(e);
+            }
+        })
+    })
+}
+
+export const markAsComplete = (id, type) => {
+
+}
+
+export const unmarkAsImportant = (id, type) => {
+    return new Promise((res, rej) => {
+        getMyTasks(2).then((r) => {
+            let data = (r.filter(j => j.id === id))[0];
+            try {
+                getMyTasks(1).then((r) => {
+                    if(r === null) {
+                        setTasks([data], 1);
+                    } else {
+                        r.push(data);
+                        setTasks(r, 1);
+                    }
+                    deleteTask(id, 2).then((d) => {
+                        console.log(d);
+                        res({
+                            status: true,
+                            tasks: d
+                        });
+                    })
+                })
+            } catch (e) {
+                rej(e);
+            }
+        })
+    })
+}
+
+export const unmarkAsComplete = (id, type) => {
+
+}
+
+const setTasks = (tasks, type) => {
+    switch(type) {
+        case 1:
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            break;
+        case 2:
+            localStorage.setItem('important', JSON.stringify(tasks));
+            break;
+        case 3:
+            localStorage.setItem('completed', JSON.stringify(tasks));
+            break;
+    }
+}
+
+const getTasksByType = (type) => {
+    switch(type) {
+        case 1:
+            return JSON.parse(localStorage.getItem('tasks'));
+        case 2:
+            return JSON.parse(localStorage.getItem('important'));
+        case 3:
+            return JSON.parse(localStorage.getItem('completed'));
+    }    
+}
