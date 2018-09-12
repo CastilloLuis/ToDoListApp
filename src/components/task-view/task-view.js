@@ -57,7 +57,7 @@ export default class TaskView extends Component {
                 <Card.Content extra>
                     <Container textAlign='center' style={{marginBottom: '2%'}}>
                         {
-                            this.props.viewType != 1 
+                            this.props.viewType != 1
                             ? (<Button circular inverted color='red' icon='star' onClick={() => this.unmarkAsImportant()}></Button>)
                             : (<Button circular inverted color='yellow' icon='star' onClick={() => this.markAsImportant()}></Button>)
                         }

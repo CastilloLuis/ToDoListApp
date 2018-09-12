@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import AddTask from '../add-task/add-task';
 import TaskView from '../task-view/task-view';
-import { Grid, Container } from 'semantic-ui-react';
-
-import { getMyTasks, addTask, deleteTask, markAsImportant, unmarkAsImportant } from '../../utils/service';
-import Task from '../task/task';
+import { Grid } from 'semantic-ui-react';
+import { getMyTasks, addTask, deleteTask, markAsImportant, unmarkAsImportant, markAsComplete } from '../../utils/service';
 
 export default class TaskContainer extends Component {
 
@@ -42,7 +40,7 @@ export default class TaskContainer extends Component {
                                                 editTask={() => this.editTask(t.id)} 
                                                 dragStart={(e) => this.onDragStart(e, t.id)} 
                                                 markAsImportant={() => this.markAsImportant(t.id)}
-                                                markAsComplete={() => this.markAsComplete()}
+                                                markAsComplete={() => this.markAsComplete(t.id)}
                                                 unmarkAsImportant={() => this.unmarkAsImportant(t.id)}
                                                 viewType={this.props.getViewType}
                                             ></TaskView>
@@ -111,8 +109,10 @@ export default class TaskContainer extends Component {
         this.setState({tasks: t.tasks});
     }
 
-    async markAsComplete() {
+    async markAsComplete(id) {
         console.log('complete task');
+        let t = await markAsComplete(id, this.props.getViewType);
+        this.setState({tasks: t.tasks});        
     }
 
     async unmarkAsImportant(id) {

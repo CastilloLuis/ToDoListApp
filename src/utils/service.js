@@ -27,7 +27,7 @@ export const addTask = (data, type) => {
 }
 
 export const editTask = () => {
-    
+
 }
 
 export const deleteTask = (id, type) => {
@@ -77,7 +77,30 @@ export const markAsImportant = (id, type) => {
 }
 
 export const markAsComplete = (id, type) => {
-
+    return new Promise((res, rej) => {
+        getMyTasks(type).then((r) => {
+            let data = (r.filter(j => j.id === id))[0];
+            try {
+                getMyTasks(3).then((r) => {
+                    if(r === null) {
+                        setTasks([data], 3);
+                    } else {
+                        r.push(data);
+                        setTasks(r, 3);
+                    }
+                    deleteTask(id, type).then((d) => {
+                        console.log(d);
+                        res({
+                            status: true,
+                            tasks: d
+                        });
+                    });
+                })
+            } catch (e) {
+                rej(e);
+            }
+        })
+    })
 }
 
 export const unmarkAsImportant = (id, type) => {
@@ -110,6 +133,8 @@ export const unmarkAsImportant = (id, type) => {
 export const unmarkAsComplete = (id, type) => {
 
 }
+
+/* set task switch && get task by id switch */
 
 const setTasks = (tasks, type) => {
     switch(type) {
