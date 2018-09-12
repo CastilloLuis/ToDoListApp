@@ -6,7 +6,6 @@ export default class TaskView extends Component {
 
     deleteTask = () => {
         this.props.deleteTask();
-        //localStorage.removeItem('important')
     }
 
     editTask = () => {

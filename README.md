@@ -1,7 +1,7 @@
 ### To-Do List app
 ____
 ABOUT THIS APP:
-> Simple "CRUD" react app to involve myself with this framework.
+> Simple tasks app to quickly play with react, semantic ui, and drag&drop :)
 
 ### Programming languages
 ____

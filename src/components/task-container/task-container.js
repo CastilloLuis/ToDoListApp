@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import AddTask from '../add-task/add-task';
 import TaskView from '../task-view/task-view';
 import { Grid } from 'semantic-ui-react';
-import { getMyTasks, addTask, deleteTask, markAsImportant, unmarkAsImportant, markAsComplete } from '../../utils/service';
+import { getMyTasks, addTask, deleteTask, markAsImportant, unmarkAsImportant, markAsComplete, unmarkAsComplete } from '../../utils/service';
 
 export default class TaskContainer extends Component {
 
@@ -106,7 +106,7 @@ export default class TaskContainer extends Component {
     }
 
     async markAsImportant(id) {
-        let t = await markAsImportant(id, 2);
+        let t = await markAsImportant(id, this.props.getViewType);
         this.setState({tasks: t.tasks});
     }
 
@@ -118,12 +118,14 @@ export default class TaskContainer extends Component {
 
     async unmarkAsImportant(id) {
         console.log('unmarked as important... passed to home');
-        let t = await unmarkAsImportant(id, 2);
+        let t = await unmarkAsImportant(id, this.props.getViewType);
         this.setState({tasks: t.tasks});
     }
 
     async unmarkAsComplete(id) {
         console.log('unmarked as completed... passed to home or favorites');
+        let t = await unmarkAsComplete(id, this.props.getViewType);
+        this.setState({tasks: t.tasks});
     }
 
     evalResponse = (response) => {
@@ -149,12 +151,12 @@ export default class TaskContainer extends Component {
     }
 
     onDropEvent = (e) => {
-        //e.preventDefault();
+        e.preventDefault();
         try {
             let id = e.dataTransfer.getData('id');
             e.target.appendChild(document.getElementById(id));       
             e.dataTransfer.clearData();     
-        } catch (e) {
+        } catch (err) {
             console.log('You left the item at the same position');
         }
     }

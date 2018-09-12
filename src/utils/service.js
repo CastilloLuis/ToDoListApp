@@ -49,19 +49,29 @@ export const deleteTask = (id, type) => {
 
 /* MARK AS IMPORTANT OR COMPLETE ITEM "SERVICES" */
 
-export const markAsImportant = (id, type) => {
+export const markAsImportant = (id, actualView)   => markService(id, actualView, 2);
+
+export const markAsComplete = (id, actualView)    => markService(id, actualView, 3);
+
+export const unmarkAsImportant = (id, actualView) => markService(id, actualView, 1);
+
+export const unmarkAsComplete = (id, actualView)  => markService(id, actualView, 1);
+
+/* util */
+
+const markService = (id, actualView, nextView) => {
     return new Promise((res, rej) => {
-        getMyTasks(1).then((r) => {
+        getMyTasks(actualView).then((r) => {
             let data = (r.filter(j => j.id === id))[0];
             try {
-                getMyTasks(2).then((r) => {
+                getMyTasks(nextView).then((r) => {
                     if(r === null) {
-                        setTasks([data], 2);
+                        setTasks([data], nextView);
                     } else {
                         r.push(data);
-                        setTasks(r, 2);
+                        setTasks(r, nextView);
                     }
-                    deleteTask(id, 1).then((d) => {
+                    deleteTask(id, actualView).then((d) => {
                         console.log(d);
                         res({
                             status: true,
@@ -73,68 +83,8 @@ export const markAsImportant = (id, type) => {
                 rej(e);
             }
         })
-    })
+    })    
 }
-
-export const markAsComplete = (id, type) => {
-    return new Promise((res, rej) => {
-        getMyTasks(type).then((r) => {
-            let data = (r.filter(j => j.id === id))[0];
-            try {
-                getMyTasks(3).then((r) => {
-                    if(r === null) {
-                        setTasks([data], 3);
-                    } else {
-                        r.push(data);
-                        setTasks(r, 3);
-                    }
-                    deleteTask(id, type).then((d) => {
-                        console.log(d);
-                        res({
-                            status: true,
-                            tasks: d
-                        });
-                    });
-                })
-            } catch (e) {
-                rej(e);
-            }
-        })
-    })
-}
-
-export const unmarkAsImportant = (id, type) => {
-    return new Promise((res, rej) => {
-        getMyTasks(2).then((r) => {
-            let data = (r.filter(j => j.id === id))[0];
-            try {
-                getMyTasks(1).then((r) => {
-                    if(r === null) {
-                        setTasks([data], 1);
-                    } else {
-                        r.push(data);
-                        setTasks(r, 1);
-                    }
-                    deleteTask(id, 2).then((d) => {
-                        console.log(d);
-                        res({
-                            status: true,
-                            tasks: d
-                        });
-                    })
-                })
-            } catch (e) {
-                rej(e);
-            }
-        })
-    })
-}
-
-export const unmarkAsComplete = (id, type) => {
-
-}
-
-/* set task switch && get task by id switch */
 
 const setTasks = (tasks, type) => {
     switch(type) {
