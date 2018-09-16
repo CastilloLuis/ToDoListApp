@@ -36,9 +36,6 @@ export default class TaskView extends Component {
         document.getElementById(id).style.cursor = 'grab';
     }
 
-
-
-
     render() {
         return (
             <div 

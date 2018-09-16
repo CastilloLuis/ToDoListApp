@@ -15,7 +15,7 @@ export default class SideBar extends Component {
                         <Sidebar as={Menu} animation='overlay' icon='labeled' inverted vertical visible>
                             <Item as='a'>
                                 <Image 
-                                    src='https://avatars2.githubusercontent.com/u/37077073?s=460&v=4'
+                                    src='https://images.sftcdn.net/images/t_optimized,f_auto/p/9f0113e7-99bf-11e6-81dc-676fb6608552/1109336420/ticktick-todo-task-list-logo.png'
                                     size='small'    
                                     circular
                                 />
