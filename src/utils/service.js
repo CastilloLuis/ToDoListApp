@@ -8,6 +8,16 @@ export const getMyTasks = (type) => {
     })
 }
 
+export const getSingleTask = (id, viewType) => {
+    return new Promise((res, rej) => {
+        try {
+            res((getTasksByType(viewType)).filter(j => j.id === id))
+        } catch (e) {
+            rej(e);
+        }
+    });
+}
+
 export const addTask = (data, type) => {
     return new Promise((res, rej) => {
         try {
@@ -26,7 +36,14 @@ export const addTask = (data, type) => {
     });
 }
 
-export const editTask = () => {
+export const editTask = (json, viewType) => {
+    return new Promise((res, rej) => {
+        deleteTask(json.id, viewType).then((r) => {
+            addTask(json, viewType).then((rs) => {
+                getMyTasks(viewType).then((rr) => res(rr))
+            })
+        })        
+    })
 
 }
 

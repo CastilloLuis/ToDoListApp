@@ -36,6 +36,9 @@ export default class TaskView extends Component {
         document.getElementById(id).style.cursor = 'grab';
     }
 
+
+
+
     render() {
         return (
             <div 
@@ -77,7 +80,7 @@ export default class TaskView extends Component {
                         }
                     </Container>
                     <div className='ui two buttons'>
-                        <Button color='yellow' icon='pencil' onClick={() => this.editTask()}></Button>
+                        <Button style={{display: this.props.viewType != 1 ? 'none' : 'block'}} color='yellow' icon='pencil' onClick={() => this.editTask()}></Button>
                         <Button color='red' icon='trash' onClick={() => this.deleteTask()}></Button>
                     </div>
                 </Card.Content>

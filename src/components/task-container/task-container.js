@@ -3,12 +3,15 @@ import AddTask from '../add-task/add-task';
 import TaskView from '../task-view/task-view';
 import { Grid } from 'semantic-ui-react';
 import { getMyTasks, addTask, deleteTask, markAsImportant, unmarkAsImportant, markAsComplete, unmarkAsComplete } from '../../utils/service';
+import TaskEditable from '../task-editable/task-editable';
 
 export default class TaskContainer extends Component {
 
     state = {
         tasks: [],
-        added: false
+        added: false,
+        isEdit: false,
+        editTaskID: null
     }
 
     async componentDidMount() {
@@ -16,7 +19,7 @@ export default class TaskContainer extends Component {
         console.log(r);
         r === null ? null : this.setState({tasks: r});
     }
-
+ 
     render() {
         return(
             <div className="droppable" 
@@ -44,7 +47,7 @@ export default class TaskContainer extends Component {
                                                 unmarkAsImportant={() => this.unmarkAsImportant(t.id)}
                                                 unmarkAsComplete={() => this.unmarkAsComplete(t.id)}
                                                 viewType={this.props.getViewType}
-                                            ></TaskView>
+                                            ></TaskView> 
                                         </Grid.Column>
                                     )
                                 }).reverse()
@@ -59,6 +62,10 @@ export default class TaskContainer extends Component {
                         addTask={(val) => this.addTask(val, this.props.getViewType)}
                         added={this.state.added}
                     ></AddTask>
+                    {
+                        this.state.isEdit ? <TaskEditable isEditAction={this.state.isEdit} editedTask={(res) => this.editedTask(res)} isEdit={(val) => this.closeEdit(val)} taskid={this.state.editTaskID} viewType={this.props.getViewType}/> : false
+                    }
+
                 </div>
             </div>
         )
@@ -78,6 +85,10 @@ export default class TaskContainer extends Component {
         }
     }
 
+    closeEdit = async(val) => {
+        await this.setState({isEdit: val}); // this value recorrido was: task(child3)-> task-editable(child1) -> task-container(parent)
+    }
+
     async addTask(val, type) { // val from task.js
         console.log(val);
         console.log(type);
@@ -85,7 +96,7 @@ export default class TaskContainer extends Component {
         switch(type) {
             case 1:
                 response = await addTask(val, 1);
-                break;
+                break; 
             case 2:
                 response = await addTask(val, 2);
                 break;
@@ -101,8 +112,17 @@ export default class TaskContainer extends Component {
         this.setState({tasks: res});
     }
 
-    async editTask(id) {
+   async editTask(id) {
         console.log(`Editing task with id: ${id}`);
+        await this.setState({isEdit: true, editTaskID: id})
+        console.log(this.state)
+        //this.child.activateEditAction(id, this.props.getViewType);
+    }
+
+    editedTask = (res) => {
+        console.warn(res); // this res went from: service response -> task(child3)-> task-editable(child1) -> task-container(parent)
+        alert('Task edited successfully :)')
+        this.setState({tasks: res})
     }
 
     async markAsImportant(id) {
