@@ -2,6 +2,7 @@
 ____
 ABOUT THIS APP:
 > Simple tasks app to quickly play with react, semantic ui, and drag&drop :)
+____
 > You can take a look [clicking here](https://castilloluis.github.io/ToDoListApp/)
 ### Programming languages
 ____
